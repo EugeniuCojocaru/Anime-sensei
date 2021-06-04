@@ -191,12 +191,12 @@ namespace Luis_bot
                 }
                 if (reader.Read())
                 {
-                    s += "I recommend: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"] + " score on myAnimeList.com.";
+                    s += "# I recommend: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"] + " score on myAnimeList.com.";
                     currentAnime++;
                     s += " Do you need another recommendation?";
                 }
                 else
-                    s += "I found no anime that suits your taste. Do you need anything else?";
+                    s += "# I didn't find any anime that suits your taste. Do you need anything else?";
                 connection.Close();
             }
             return s ;
@@ -227,6 +227,7 @@ namespace Luis_bot
         static string getInfoAboutAnime()
         {
             string s = "";
+            askInfo = true;
             List<string> ls = parseAnime();
             if (ls.Count != 0)
             {
@@ -250,7 +251,7 @@ namespace Luis_bot
                     {
                         i++;
                         title = reader["Title"].ToString().Trim();
-                        s += "I recommend: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"].ToString().Trim() + " score on myAnimeList.com. Genres: ";
+                        s += "# Here's what I know: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"].ToString().Trim() + " score on myAnimeList.com. Genres: ";
                     }
                     while (reader.Read())
                     {
@@ -262,24 +263,24 @@ namespace Luis_bot
                         {
                             title = reader["Title"].ToString().Trim();
                             s = s.Substring(0, s.Length - 2);
-                            s += "\nI recommend: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"].ToString().Trim() + " score on myAnimeList.com. Genres: ";
+                            s += "\nHere's what I know: " + reader["Title"].ToString().Trim() + " from " + reader["Year"].ToString().Trim() + ", it has " + reader["Episodes"].ToString().Trim() + " episodes and a " + reader["Score"].ToString().Trim() + " score on myAnimeList.com. Genres: ";
                         }
                     }
                     if (i == 0)
-                        s += "I found no anime with the titles you chose. Do you need anything else?";
+                        s += "# I found no anime with the titles you chose. Do you need anything else?";
                     else
                     {
                         s = s.Substring(0, s.Length - 2);
-                        s += ". Do you need anything else?";
+                        s += ". Do you need anything else?";                        
                     }
                     connection.Close();
                 }
             }
             else
             {
-                s += "I found no anime with the titles you chose. Do you need anything else?";
+                s += "# I found no anime with the titles you chose. Do you need anything else?";
             }
-            askInfo = true;
+            
             return s;
         }
 
@@ -331,7 +332,7 @@ namespace Luis_bot
                 {
                     currentAnime = 0;
                     exit = true;
-                    s += "Ok then, I need to guide some other lonely souls so I'll take my leave! See ya!";
+                    s += "# Ok then, I need to guide some other lonely souls so I'll take my leave! See ya!";
                 }
                 askReco = false;
             }
@@ -342,11 +343,12 @@ namespace Luis_bot
                     if (parseResponse() == true)
                     {
                         //Console.WriteLine("Current anime: " + currentAnime);
-                        return "Do you need help with anything else?";
+                        askInfo = false;
+                        return "# Do you need help with anything else?";
                     }
                     else
                     {                        
-                        s += "Ok then, see you next time!";
+                        s += "# Ok then, see you next time!";
                         exit = true;
                     }
                     askInfo = false;
@@ -357,14 +359,14 @@ namespace Luis_bot
                     {
                         if (parseResponse() == true)
                         {
-                            s += "Ah I see you are a man of culture as well! But Kami-sama only thought me about anime. I don't know anything else. Shall I give you anime recommendations? ";
+                            s += "# Ah I see you are a man of culture as well! But Kami-sama only thought me about anime. I don't know anything else. Shall I give you anime recommendations? ";
                             askReco = true;
                             return s;
                         }
                         else
                         {
                             exit = true;
-                            return "Oh my sweet summer child, you are too young to ruin your life with hentai. Anyone can grasp into heaven, but it takes a lot of willpower to let it go! ";
+                            return "# Oh my sweet summer child, you are too young to ruin your life with hentai. Anyone can grasp into heaven, but it takes a lot of willpower to let it go! ";
                         }
                     }
                    
@@ -380,7 +382,7 @@ namespace Luis_bot
         static string getDarkSide()
         {
             askDarkSide = true;
-            return "Are you over 18 yo?";
+            return "# Are you over 18 yo?";
         }
 
 
